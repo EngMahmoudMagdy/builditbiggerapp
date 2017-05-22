@@ -18,9 +18,9 @@ public class EndpointsAsyncTaskTest {
     public void testDoInBackground() throws Exception {	
 		try {
             com.udacity.gradle.builditbigger.MainActivityFragment mainActivity = new com.udacity.gradle.builditbigger.MainActivityFragment();
-             fragment.testFlag = true;
-			EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(mainActivity);
-            endpointsAsyncTask.execute(fragment);
+             mainActivity.testFlag = true;
+			EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask();
+            endpointsAsyncTask.execute(mainActivity);
             String result = endpointsAsyncTask.get(30, TimeUnit.SECONDS);
 			Thread.sleep(1000);
             assertNotNull(result);
