@@ -1,10 +1,11 @@
 package com.udacity.gradle.builditbigger;
 
 import android.support.test.runner.AndroidJUnit4;
-
+import android.util.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
+import java.util.concurrent.TimeUnit;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 /**
  * Created by kev on 3/21/16.
@@ -14,11 +15,18 @@ import static org.junit.Assert.assertTrue;
 public class EndpointsAsyncTaskTest {
 
     @Test
-    public void testDoInBackground() throws Exception {
-        com.udacity.gradle.builditbigger.MainActivityFragment fragment = new com.udacity.gradle.builditbigger.MainActivityFragment();
-        fragment.testFlag = true;
-        new EndpointsAsyncTask().execute(fragment);
-        Thread.sleep(5000);
-        assertTrue("Error: Fetched Joke = " + fragment.loadJoke, fragment.loadJoke != null);
+    public void testDoInBackground() throws Exception {	
+		try {
+            com.udacity.gradle.builditbigger.MainActivityFragment mainActivity = new com.udacity.gradle.builditbigger.MainActivityFragment();
+             fragment.testFlag = true;
+			EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(mainActivity);
+            endpointsAsyncTask.execute(fragment);
+            String result = endpointsAsyncTask.get(30, TimeUnit.SECONDS);
+			Thread.sleep(1000);
+            assertNotNull(result);
+            assertTrue(result.length() > 0);
+        } catch (Exception e){
+            Log.e("EndpointsAsyncTaskTest", "testDoInBackground: Timed out");
+        }
     }
 }
